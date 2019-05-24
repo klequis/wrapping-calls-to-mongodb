@@ -17,7 +17,7 @@ after(async () => {
   await close()
 })
 
-describe('dbFunctions', () => {
+describe('dbFunctions', function() {
   describe('test insertOne', function() {
     before(async function() {
       await dropCollection(collectionName)
@@ -82,21 +82,21 @@ describe('dbFunctions', () => {
       expect(idDeleted).to.equal(idToDelete)
     })
   })
-
-})
-
-describe('test findOneAndUpdate', function() {
-  const newData = { title: 'changed title', completed: true }
-  let idToUpdate = undefined
-  before(async function() {
-    await dropCollection(collectionName)
-    const inserted = await insertMany(collectionName, fourTodos)
-    idToUpdate = inserted.data[1]._id.toString()
-  })
-  it('findOneAndUpdate: should return updated document', async function() {
-    const updated = await findOneAndUpdate(collectionName, idToUpdate, newData)
-    expect(updated.data._id.toString()).to.equal(idToUpdate)
-    expect(updated.data.title).to.equal(newData.title)
-    expect(updated.data.completed).to.equal(newData.completed)
+  describe('test findOneAndUpdate', function() {
+    const newData = { title: 'changed title', completed: true }
+    let idToUpdate = undefined
+    before(async function() {
+      await dropCollection(collectionName)
+      const inserted = await insertMany(collectionName, fourTodos)
+      idToUpdate = inserted.data[1]._id.toString()
+    })
+    it('findOneAndUpdate: should return updated document', async function() {
+      const updated = await findOneAndUpdate(collectionName, idToUpdate, newData)
+      expect(updated.data._id.toString()).to.equal(idToUpdate)
+      expect(updated.data.title).to.equal(newData.title)
+      expect(updated.data.completed).to.equal(newData.completed)
+    })
   })
 })
+
+
