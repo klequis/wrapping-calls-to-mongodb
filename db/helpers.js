@@ -39,7 +39,7 @@ const tryIt = id => {
 
 
 
-export const isValidHexId = id => {
+export const isValidHexIdString = id => {
   let _id = ''
   try {
     if (!id) {
@@ -47,7 +47,6 @@ export const isValidHexId = id => {
     } else {
       typeof id !== 'string' ? (_id = id.toString()) : (_id = id)
     }
-    const validHex = checkForHexString.test(_id)
     return checkForHexString.test(_id)
   } catch (e) {
     red(e)
