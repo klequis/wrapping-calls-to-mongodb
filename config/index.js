@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 const mongoUrl = (env) => {
   if (env === 'test') {
     return 'mongodb://localhost:27017'

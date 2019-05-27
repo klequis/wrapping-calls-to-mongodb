@@ -10,6 +10,8 @@ import {
   insertMany,
   insertOne
 } from 'db'
+import { yellow } from 'logger'
+
 
 const collectionName = 'todos'
 
@@ -27,9 +29,13 @@ describe('dbFunctions', function() {
     // for new todos, competed is always false and set by the server
     const newData = { title: 'todo added' }
     it('insertOne: should insert new document', async function() {
-      const i = await insertOne(collectionName, newData)
-      expect(i.data._id).to.be.not.null
-      expect(i.data.title).to.equal('todo added')
+      const ins = await insertOne(collectionName, newData)
+      expect(ins.data._id).to.be.not.null
+      expect(ins.data.title).to.equal('todo added')
+    })
+    it('wrong collection name should fail', async function() {
+      const insa = await insertOne('wrong-collection-name', newData)
+      yellow('insa', insa)
     })
   })
 
