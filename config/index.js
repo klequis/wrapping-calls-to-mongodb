@@ -2,6 +2,8 @@
 const mongoUrl = (env) => {
   if (env === 'test') {
     // return 'mongodb://localhost:27017'
+    // return 'todoTestUser:password@1@mongodb://localhost:27017'
+    
   }
   return 'mongodb+srv://todo-db-admin:D92dARWONO0t16uF@todo-cluster0-ilc7v.mongodb.net/test?retryWrites=true'
 }

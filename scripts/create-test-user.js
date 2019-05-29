@@ -1,3 +1,6 @@
+// run with: nodemon --exec npx babel-node create-test-user.js todo-test
+
+
 import mongodb, { ObjectID } from 'mongodb'
 // import { green, red } from '../logger'
 import chalk from 'chalk'
@@ -41,18 +44,25 @@ const execCmd = async (params = {}, options = {}) => {
   const opts = {
     useAdmin: options.useAdmin || false
   }
+  console.log('**options**', options);
+  
   try {
     const { db } = await connectDB()
-    const admin = db.admin()
+    
     const cmd = {}
-    const a = Object.keys(params).forEach(k => {
+    Object.keys(params).forEach(k => {
       cmd[k] = params[k]
     })
     console.log('execCmd: ', cmd)
     let ret
     if (opts.useAdmin) {
+      console.log('** using admin **');
+      
+      const admin = db.admin()
       ret = await admin.command(params)
-    } else [(ret = await db.command(params))]
+    } else {
+      ret = await db.command(params)
+    }
     logSuccess(`result: `, ret)
     return ret
   } catch (e) {
@@ -64,7 +74,8 @@ const execCmd = async (params = {}, options = {}) => {
 
 const createRole = async (roleName, dbName) => {
   await execCmd({
-    createRole: `${roleName}@${dbName}`,
+    // createRole: `${roleName}@${dbName}`,
+    createRole: roleName,
     privileges: [
       {
         resource: { db: dbName, collection: '' },
@@ -78,7 +89,8 @@ const createRole = async (roleName, dbName) => {
 
 const createTestUser = async (userName) => {
   await execCmd({
-    createUser: `${userName}@${dbName}`,
+    // createUser: `${userName}@${dbName}`,
+    createUser: userName,
     pwd: 'password@1',
     // roles: [{ role: 'todoTest', db: dbName }],
     roles: [ 'todoTest' ],
@@ -98,6 +110,10 @@ const dropUser = async userName => {
   })
 }
 
+/*
+    List roles
+    doc: https://docs.mongodb.com/manual/reference/command/usersInfo/#dbcmd.usersInfo
+*/
 const listUserDefinedRoles = async () => {
   return await execCmd({
     rolesInfo: 1,
@@ -106,10 +122,38 @@ const listUserDefinedRoles = async () => {
   })
 }
 
+const listAllRoles = async () => {
+  return await execCmd({
+    rolesInfo: 1,
+    showPrivileges: true,
+    // forAllDbs: true
+  }, { useAdmin: true })
+}
+
+
 const listUsers = async () => {
   const ret = await execCmd({ usersInfo: 1 })
-  console.log('ret', ret)
+  const users = ret.users
+  console.log('-----------------------------')
+  console.group('List of users')
+  console.log(users)
+  console.groupEnd()
+  return users
+}
+
+const dropAllUsers = async userName => {
+  const users = await listUsers()
+  console.log('******************************')
+  console.log('users ', users)
+  users.forEach(async u => {
+    await dropUser(u.user)
+    // console.log(u.user)
+  })
+  console.log('******************************')
   
+  // await execCmd({
+  //   dropUser: userName
+  // })
 }
 
 const dropAllUserDefinedRoles = async () => {
@@ -161,15 +205,16 @@ const main = async () => {
   }
 
   // await dropAllUserDefinedRoles()
-  // await createRole('todoTest', 'todo-test')
+  //  await createRole('todoTest', 'todo-test')
 
   // await listUserDefinedRoles()
+  // await listAllRoles()
   // await createTestUser('todoTestUser', 'todo-test')
-  // await dropUser('todoTestUser@todo-test')
-  const users = await listUsers()
-  
-  
+  // await dropUser('robo3t')
 
+  
+  await dropAllUsers()
+  await listUsers()
   // await printDbName()
   // await listDatabases()
   // await listCollections()
