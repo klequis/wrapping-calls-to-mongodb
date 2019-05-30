@@ -1,14 +1,15 @@
 /* istanbul ignore file */
-const mongoUrl = (env) => {
+const mongoUrl = env => {
   if (env === 'test') {
-    // return 'mongodb://localhost:27017'
-    // return 'todoTestUser:password@1@mongodb://localhost:27017'
-    
+    // good: return 'mongodb://localhost:27017'
+    // mongodb://superadmin:thepianohasbeendrinking@<host>:<port>
+    return 'mongodb://localadmin:a9vChJeSqk&uUG@localhost:27017'
+  } else {
+    return 'mongodb+srv://todo-db-admin:D92dARWONO0t16uF@todo-cluster0-ilc7v.mongodb.net/test?retryWrites=true'
   }
-  return 'mongodb+srv://todo-db-admin:D92dARWONO0t16uF@todo-cluster0-ilc7v.mongodb.net/test?retryWrites=true'
 }
 
-const dbName = (env) => {
+const dbName = env => {
   if (env === 'test') {
     return 'todo-test'
   } else if (env === 'dev') {
@@ -17,7 +18,7 @@ const dbName = (env) => {
   return 'todo-prod'
 }
 
-const apiRoot = (env)  => {
+const apiRoot = env => {
   if (env === 'prod') {
     return ''
   }
@@ -29,4 +30,4 @@ export default {
   dbName: dbName(process.env.NODE_ENV),
   apiRoot: apiRoot(process.env.NODE_ENV),
   port: 3030
-};
+}
