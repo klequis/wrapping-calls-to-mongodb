@@ -12,7 +12,7 @@ const settings = {
   },
   dev: {
     mongoUri: `mongodb://devUser:${localPwd}@localhost:27017/${dbNameDev}`,
-    dbName: 'todo-test',
+    dbName: dbNameDev,
   },
   testRemote: {
     mongoUri: `mongodb+srv://todo-test:Tly24XUsCBdRwYwr@todo-cluster0-ilc7v.mongodb.net/${dbNameTest}?retryWrites=true`,
