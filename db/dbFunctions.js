@@ -8,7 +8,9 @@ let client
 
 const connectDB = async () => {
   if (!client) {
-    client = await MongoClient.connect(config.mongoUrl, {
+    console.log('mongoUri', config.mongoUri);
+    
+    client = await MongoClient.connect(config.mongoUri, {
       useNewUrlParser: true
     })
   }
