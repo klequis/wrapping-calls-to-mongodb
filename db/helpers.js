@@ -1,8 +1,7 @@
 import { ObjectID } from 'mongodb'
 import { omit } from 'ramda'
-import { yellow } from 'logger'
 
-const checkForHexString = new RegExp('^[0-9a-fA-F]{24}$');
+const checkForHexString = new RegExp('^[0-9a-fA-F]{24}$')
 
 export const removeIdProp = obj => {
   return omit(['_id'], obj)

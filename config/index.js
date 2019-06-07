@@ -5,10 +5,16 @@ const unknowEnvName = 'ERROR: config/indes.js: unknown environment name. Must be
 const mongoUri = (env) => {
   switch (env) {
     case 'testLocal':
+      console.log('env: ', env);
+      console.log('monguUri: ', settings.testLocal.mongoUri)
       return settings.testLocal.mongoUri
     case 'testRemote':
+      console.log('env: ', env);
+      console.log('monguUri: ', settings.testRemote.mongoUri)
       return settings.testRemote.mongoUri
     case 'dev':
+      console.log('env: ', env);
+      console.log('monguUri: ', settings.dev.mongoUri)
       return settings.dev.mongoUri
     case 'prod':
       return settings.prod.mongoUri
@@ -49,5 +55,6 @@ export default {
   mongoUri: mongoUri(process.env.NODE_ENV),
   dbName: dbName(process.env.NODE_ENV),
   apiRoot: apiRoot(process.env.NODE_ENV),
-  port: 3030
+  port: 3030,
+  env: process.env.NODE_ENV
 };

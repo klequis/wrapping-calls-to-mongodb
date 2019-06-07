@@ -10,8 +10,6 @@ import {
   insertMany,
   insertOne
 } from 'db'
-import { yellow } from 'logger'
-
 
 const collectionName = 'todos'
 
@@ -20,32 +18,42 @@ after(async () => {
 })
 
 describe('dbFunctions', function() {
+
+  describe('test insertMany', function() {
+    it('insertMany: should insert 4 todos', async function() {
+      const i = await insertMany(collectionName, fourTodos)
+      expect(i.data.length).to.equal(4)
+    })
+  })
+
+  describe('test dropCollection', function() {
+    before(async function() {
+      await dropCollection(collectionName)
+      await insertMany(collectionName, fourTodos)
+    })
+    // In the event the collection to drop is not found, dropCollection()
+    // will return { data: true, error: null }
+    it('should return true', async function() {
+      const dc1 = await dropCollection(collectionName)
+      expect(dc1.data).to.equal(true)
+      const dc2 = await dropCollection(collectionName)
+      expect(dc2.data).to.equal(true)
+    })
+  })
+
   describe('test insertOne', function() {
     before(async function() {
       await dropCollection(collectionName)
       await insertMany(collectionName, fourTodos)
     })
-    // insertOne will only be used for new todos.
-    // for new todos, competed is always false and set by the server
     const newData = { title: 'todo added' }
     it('insertOne: should insert new document', async function() {
-      const ins = await insertOne(collectionName, newData)
-      expect(ins.data._id).to.be.not.null
-      expect(ins.data.title).to.equal('todo added')
+      const i = await insertOne(collectionName, newData)
+      expect(i.data._id).to.be.not.null
+      expect(i.data.title).to.equal('todo added')
     })
     it('wrong collection name should fail', async function() {
       const insa = await insertOne('wrong-collection-name', newData)
-      yellow('insa', insa)
-    })
-  })
-
-  describe('test insertMany', function() {
-    before(async function() {
-      await dropCollection(collectionName)
-    })
-    it('insertMany: should insert 4 todos', async function() {
-      const i = await insertMany(collectionName, fourTodos)
-      expect(i.data.length).to.equal(4)
     })
   })
 
@@ -68,9 +76,9 @@ describe('dbFunctions', function() {
       idToFind = inserted.data[0]._id.toString()
     })
     it('findById: should return 1 todo with id of second todo', async function() {
-      const found = await findById('todos', idToFind)
-      expect(found.data.length).to.equal(1)
-      const idFound = found.data[0]._id.toString()
+      const f = await findById('todos', idToFind)
+      expect(f.data.length).to.equal(1)
+      const idFound = f.data[0]._id.toString()
       expect(idFound).to.equal(idToFind)
     })
   })
@@ -88,6 +96,7 @@ describe('dbFunctions', function() {
       expect(idDeleted).to.equal(idToDelete)
     })
   })
+
   describe('test findOneAndUpdate', function() {
     const newData = { title: 'changed title', completed: true }
     let idToUpdate = undefined
@@ -103,6 +112,7 @@ describe('dbFunctions', function() {
       expect(updated.data.completed).to.equal(newData.completed)
     })
   })
+
 })
 
 
