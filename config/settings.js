@@ -2,10 +2,20 @@ const dbNameTest = 'todo-test'
 const dbNameDev = 'todo-dev'
 const dbNameProd = 'todo-prod'
 const localPwd = 'karl'
-export const apiRootLocal = 'https://api.klequis-todo.tk'
-export const apiRootRemote = ''
 
 const settings = {
+  dbName: {
+    test: dbNameTest,
+    dev: dbNameDev,
+    prod: dbNameProd
+  },
+  pwd: {
+    local:  'karl',
+  }, 
+  apiRoot: {
+    local: 'https://api.klequis-todo.tk',
+    remote: ''
+  },
   testLocal: {
     mongoUri: `mongodb://testUser:${localPwd}@localhost:27017/${dbNameTest}`,
     dbName: dbNameTest,

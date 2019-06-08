@@ -18,7 +18,6 @@ after(async () => {
 })
 
 describe('dbFunctions', function() {
-
   describe('test insertMany', function() {
     it('insertMany: should insert 4 todos', async function() {
       const i = await insertMany(collectionName, fourTodos)
@@ -51,9 +50,6 @@ describe('dbFunctions', function() {
       const i = await insertOne(collectionName, newData)
       expect(i.data._id).to.be.not.null
       expect(i.data.title).to.equal('todo added')
-    })
-    it('wrong collection name should fail', async function() {
-      const insa = await insertOne('wrong-collection-name', newData)
     })
   })
 
@@ -106,13 +102,14 @@ describe('dbFunctions', function() {
       idToUpdate = inserted.data[1]._id.toString()
     })
     it('findOneAndUpdate: should return updated document', async function() {
-      const updated = await findOneAndUpdate(collectionName, idToUpdate, newData)
+      const updated = await findOneAndUpdate(
+        collectionName,
+        idToUpdate,
+        newData
+      )
       expect(updated.data._id.toString()).to.equal(idToUpdate)
       expect(updated.data.title).to.equal(newData.title)
       expect(updated.data.completed).to.equal(newData.completed)
     })
   })
-
 })
-
-

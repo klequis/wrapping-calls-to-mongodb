@@ -2,18 +2,18 @@ import settings from './settings'
 
 const unknowEnvName = 'ERROR: config/indes.js: unknown environment name. Must be testLocal, testRemote, dev or prod'
 
-const mongoUri = (env) => {
+export const mongoUri = env => {
   switch (env) {
     case 'testLocal':
-      console.log('env: ', env);
+      console.log('env: ', env)
       console.log('monguUri: ', settings.testLocal.mongoUri)
       return settings.testLocal.mongoUri
     case 'testRemote':
-      console.log('env: ', env);
+      console.log('env: ', env)
       console.log('monguUri: ', settings.testRemote.mongoUri)
       return settings.testRemote.mongoUri
     case 'dev':
-      console.log('env: ', env);
+      console.log('env: ', env)
       console.log('monguUri: ', settings.dev.mongoUri)
       return settings.dev.mongoUri
     case 'prod':
@@ -23,33 +23,36 @@ const mongoUri = (env) => {
   }
 }
 
-const dbName = (env) => {
+export const dbName = env => {
   switch (env) {
     case 'testLocal':
-      return settings.testLocal.dbName
+      return settings.dbName.test
     case 'testRemote':
-      return settings.testRemote.dbName      
+      return settings.dbName.test
     case 'dev':
-      return settings.dev.dbName
+      return settings.dbName.dev
     case 'prod':
-      return settings.prod.dbName
+      return settings.dbName.prod
     default:
       throw new Error(unknowEnvName)
   }
 }
 
-const apiRoot = (env)  => {
+export const apiRoot = (env)  => {
+  console.log('apiRoot: env', env);
+  
   switch (env) {
     case 'testLocal':
     case 'dev':
-      return settings.apiRootLocal
+      return settings.apiRoot.local
     case 'testRemote':
     case 'prod':
-      return settings.apiRootRemote
+      return settings.apiRoot.remote
     default:
       throw new Error(unknowEnvName)
   }
 }
+
 
 export default {
   mongoUri: mongoUri(process.env.NODE_ENV),
