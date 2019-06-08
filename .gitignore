@@ -14,4 +14,4 @@ lib-cov
 .npm
 .node_repl_history
 .nyc_output
-config/settings.js
+settings.js
