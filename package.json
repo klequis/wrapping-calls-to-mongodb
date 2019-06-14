@@ -6,7 +6,6 @@
   "scripts": {
     "test": "NODE_ENV=testLocal NODE_PATH=./ nyc mocha --require @babel/register",
     "test-watch": "export WATCH='watch' && nodemon --exec 'npm test'",
-    "start": "babel-node server/index.js"
   },
   "keywords": [],
   "author": "",
@@ -24,12 +23,11 @@
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.4",
+    "@babel/types": "^7.4.4",
     "@types/mongodb": "^3.1.27",
+    "@types/node": "^12.0.7",
     "babel-plugin-istanbul": "^5.1.4",
     "chai": "^4.2.0",
-    "chai-http": "^4.2.1",
-    "eslint": "^5.16.0",
-    "eslint-plugin-import": "^2.17.3",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "supertest": "^4.0.2"
